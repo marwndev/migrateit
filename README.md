@@ -57,12 +57,10 @@ export class User {
     @AutoIncrement()
     id: number;
 
-    ()
     @Size(100)
     name: string;
 
     @Unique()
-    ()
     @Size(300)
     email: string;
 
@@ -95,7 +93,7 @@ Available decorators:
 - `@ColType(type)`: Specify custom column type
 
 Note that these decorators will not add any metadata to your classes. They are only used to help the LLM better understand your schema.
-Properties without any decorators will be treated as nullable columns with an appropriate type inferred from the TypeScript type.
+Not Nullable properties will get `@NotNull()` decorator automatically.
 
 ### Managing Migrations
 
