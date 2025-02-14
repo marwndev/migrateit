@@ -10,7 +10,7 @@
         ".": "./index.js"
     },
     "scripts": {
-        "build": "rimraf dist/ && tsc -p tsconfig.compile.json && cp package.json dist/",
+        "build": "rimraf dist/ && tsc -p tsconfig.compile.json && cp package.json README.md dist/",
         "migrateit:dev": "tsx ./src/bin/index.ts",
         "test:dev": "tsx --test"
     },

@@ -148,7 +148,7 @@ To add support for other databases:
 
 ```typescript
 import { registerAdapter } from 'migrateit';
-registerAdapter('database-name', new CustomDatabaseAdapter(config));
+registerAdapter('database-name', new CustomDatabaseAdapter());
 ```
 
 ## Development
@@ -169,4 +169,4 @@ npm run build
 
 [License information]
 
-
+MIT
