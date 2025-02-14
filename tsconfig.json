@@ -1,0 +1,46 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "module": "nodenext",
+        "target": "esnext",
+        "sourceMap": true,
+        "declaration": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "moduleResolution": "nodenext",
+        "isolatedModules": false,
+        "suppressImplicitAnyIndexErrors": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "allowSyntheticDefaultImports": true,
+        "importHelpers": true,
+        "newLine": "LF",
+        "noEmit": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "useDefineForClassFields": false,
+        "paths": {
+        },
+        "lib": [
+            "es7",
+            "ESNext.AsyncIterable"
+        ],
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "types": [
+            "node"
+        ]
+    },
+    "include": [
+        "./src"
+    ],
+    "linterOptions": {
+        "exclude": []
+    }
+}
