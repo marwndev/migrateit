@@ -25,7 +25,8 @@ npm install migrateit
 npx migrateit init
 ```
 
-This will create a `migrateit.config.json` file in your project root with the following structure:
+This will create 2 files:
+- `migrateit.config.json` in your project root directory:
 
 ```json
 {
@@ -37,11 +38,16 @@ This will create a `migrateit.config.json` file in your project root with the fo
     },
     "llm": {
         "provider": "openai",
-        "model": "gpt-4",
+        "model": "gpt-4o",
         "apiKey": "optional-your-api-key",
         "baseURL": "optional-base-url"
     }
 }
+```
+- `./src/migrations/000-init.sql`: This file is executed before the first migration to set up your database. You can use it for example to create initial DB schema, add extensions, etc. e.g:
+
+```sql
+CREATE SCHEMA IF NOT EXISTS app;
 ```
 
 ### Define Your Models
@@ -51,7 +57,7 @@ Use decorators to define your database schema in TypeScript classes:
 ```typescript
 import { AutoIncrement, NotNull, PrimaryKey, Size, Table, Unique } from "migrateit";
 
-@Table('users')
+@Table('app.users')
 export class User {
     @PrimaryKey()
     @AutoIncrement()
@@ -108,6 +114,28 @@ Options:
 - `-d, --dry-run`: Preview migration without creating files
 - `-e, --empty`: Create empty migration file
 
+This will create 2 files in your migrations directory, one for up and one for down. 
+```sql
+-- ./src/migrations/1739557922583-create-users-table.up.sql
+create table app.users (
+    id serial primary key,
+    name varchar(100) not null,
+    email varchar(300) not null unique,
+    password varchar not null,
+    created_at timestamp
+);
+```
+
+
+```sql
+-- ./src/migrations/1739557922583-create-users-table.down.sql
+drop table app.users;
+```
+
+It'll also create `./src/migrations/000-schema.sql` file. The schema file contains the full schema of your database. It is updated whenever a new migration is created and it is sent to the LLM to help identify the changes between the current schema and the new one.
+
+> **_NOTE:_**  If you make any changes to your `(up|down).sql` files or remove them, do not forget to apply the same changes to your schema file. 
+
 #### List Migrations
 
 ```bash
@@ -136,17 +164,25 @@ Reverts the last applied migration.
 ### Database Support
 
 Currently supported databases:
-- PostgreSQL (using `pg` libray)
-- SQLite (using Node's built-in SQLite support)
+- PostgreSQL: Using `pg` libray
+- SQLite: Using Node's built-in SQLite support (Node v22+ required)
 
-To add support for other databases:
+To add support for other databases or you want to use your own adapter for existing db types:
 - Create a class that inherits from `DatabaseAdapter` class.
 - Create a file `migrateit.init.ts` at the root of your project.
 - Register your adapter:
 
 ```typescript
 import { registerAdapter } from 'migrateit';
-registerAdapter('database-name', new CustomDatabaseAdapter());
+registerAdapter('adapter-name', new CustomDatabaseAdapter());
+```
+- Update your `migrateit.config.json` file:
+
+```json
+{
+    "dbType": "dbType",
+    "dbAdapter": "adapter-name"
+}
 ```
 
 ## Development

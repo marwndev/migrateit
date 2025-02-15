@@ -1,6 +1,6 @@
 {
     "name": "migrateit",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Automatic database migrations with LLM support",
     "type": "module",
     "bin": {
